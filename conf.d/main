@@ -64,6 +64,9 @@ sed -i "s|^authentication.enabled.*|authentication.enabled = true|" $CONF
 MD5_PASS=$(echo -n $ADMIN_PASS | md5sum | cut -d " " -f 1)
 $MYSQL_BATCH --database=$DB_NAME --execute "UPDATE si_user SET email=\"$ADMIN_MAIL\", password=\"$MD5_PASS\" WHERE id=1;" 
 
+# secure sensitive files
+chmod 640 $WEBROOT/config/config.ini
+
 # stop services
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
