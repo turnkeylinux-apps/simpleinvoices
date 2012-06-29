@@ -10,3 +10,10 @@ ADMIN_MAIL=admin@example.com
 SRC=/usr/local/src
 WEBROOT=/var/www/simpleinvoices
 
+# unpack and set permissions
+unzip $SRC/simpleinvoices.*.zip -d $(dirname $WEBROOT)
+rm $SRC/simpleinvoices.*.zip
+chown -R root:root $WEBROOT
+chown -R www-data:www-data $WEBROOT/tmp
+chown www-data:www-data $WEBROOT/config/config.ini
+
