@@ -57,6 +57,13 @@ $CURL "${URL}&view=essential"
 
 rm -f /tmp/cookie
 
+# enable authentication and set default creds
+CONF=$WEBROOT/config/config.ini
+sed -i "s|^authentication.enabled.*|authentication.enabled = true|" $CONF
+
+MD5_PASS=$(echo -n $ADMIN_PASS | md5sum | cut -d " " -f 1)
+$MYSQL_BATCH --database=$DB_NAME --execute "UPDATE si_user SET email=\"$ADMIN_MAIL\", password=\"$MD5_PASS\" WHERE id=1;" 
+
 # stop services
 /etc/init.d/mysql stop
 /etc/init.d/apache2 stop
