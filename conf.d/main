@@ -32,3 +32,8 @@ sed -i "s|^nonce.key.*|nonce.key = $(mcookie)|" $CONF
 
 sed -i "s|Europe/London|UTC|" $CONF
 
+# configure apache
+a2dissite default
+a2ensite simpleinvoices
+a2enmod rewrite
+
