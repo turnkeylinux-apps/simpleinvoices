@@ -1,0 +1,12 @@
+#!/bin/sh -ex
+
+DB_NAME=simpleinvoices
+DB_USER=simpleinvoices
+DB_PASS=$(mcookie)
+
+ADMIN_PASS=turnkey
+ADMIN_MAIL=admin@example.com
+
+SRC=/usr/local/src
+WEBROOT=/var/www/simpleinvoices
+
