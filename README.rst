@@ -24,7 +24,7 @@ Credentials *(passwords set at first boot)*
 -------------------------------------------
 
 -  Webmin, SSH, MySQL, phpMyAdmin: username **root**
--  SimpleInvoices: username **admin@example.com**
+-  SimpleInvoices: username is email set on first boot
 
 
 .. _SimpleInvoices: http://www.simpleinvoices.org/
