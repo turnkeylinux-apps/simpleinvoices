@@ -1,0 +1,12 @@
+#!/bin/bash -ex
+
+[ "$FAB_HTTP_PROXY" ] &&  http_proxy="$FAB_HTTP_PROXY"
+
+
+REPO_URL=git://github.com/simpleinvoices/simpleinvoices.git
+BRANCH="stable-2012-1-CIS3000"
+WEBROOT=/var/www/simpleinvoices
+
+git clone --recursive --depth 1 -b $BRANCH $REPO_URL $WEBROOT
+
+unset http_proxy
