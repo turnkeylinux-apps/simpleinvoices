@@ -9,17 +9,18 @@ ADMIN_MAIL=admin@example.com
 
 WEBROOT=/var/www/simpleinvoices
 
+CONF=$WEBROOT/config/config.php
+
 # set permissions
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/tmp
-chown www-data:www-data $WEBROOT/config/config.ini
+chown www-data:www-data $CONF
 
 # tweak php.ini
 PHPINI=/etc/php5/apache2/php.ini
 sed -i "s|^memory_limit.*|memory_limit = 64M|" $PHPINI
 
 # tweak configuration
-CONF=$WEBROOT/config/config.ini
 sed -i "0,/params.username/s/params.username.*/params.username = $DB_USER/" $CONF
 sed -i "0,/params.password/s/params.password.*/params.password = $DB_PASS/" $CONF
 sed -i "0,/params.dbname/s/params.dbname.*/params.dbname = $DB_NAME/" $CONF
@@ -55,14 +56,13 @@ $CURL "${URL}&view=essential"
 rm -f /tmp/cookie
 
 # enable authentication and set default creds
-CONF=$WEBROOT/config/config.ini
 sed -i "s|^authentication.enabled.*|authentication.enabled = true|" $CONF
 
 MD5_PASS=$(echo -n $ADMIN_PASS | md5sum | cut -d " " -f 1)
 $MYSQL_BATCH --database=$DB_NAME --execute "UPDATE si_user SET email=\"$ADMIN_MAIL\", password=\"$MD5_PASS\" WHERE id=1;" 
 
 # secure sensitive files
-chmod 640 $WEBROOT/config/config.ini
+chmod 640 $CONF
 
 # stop services
 /etc/init.d/mysql stop
