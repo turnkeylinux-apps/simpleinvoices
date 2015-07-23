@@ -4,8 +4,11 @@
 
 
 REPO_URL=git://github.com/simpleinvoices/simpleinvoices.git
-BRANCH="stable-2012-1-CIS3000"
+BRANCH="master"
 WEBROOT=/var/www/simpleinvoices
+
+# tested working at commit 96079e3526 - Mar 27 2015
+# https://github.com/simpleinvoices/simpleinvoices/commit/96079e35269b4e513b3f8bac29ea9a2843f10236
 
 git clone --recursive --depth 1 -b $BRANCH $REPO_URL $WEBROOT
 
