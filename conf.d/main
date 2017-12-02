@@ -17,7 +17,7 @@ chown -R www-data:www-data $WEBROOT/tmp
 chown www-data:www-data $CONF
 
 # tweak php.ini
-PHPINI=/etc/php5/apache2/php.ini
+PHPINI=/etc/php/7.0/apache2/php.ini
 sed -i "s|^memory_limit.*|memory_limit = 64M|" $PHPINI
 
 # tweak configuration
@@ -36,8 +36,8 @@ a2ensite simpleinvoices
 a2enmod rewrite
 
 # start services
-/etc/init.d/mysql start
-/etc/init.d/apache2 start
+service mysql start
+service apache2 start
 
 # setup the database
 MYSQL_BATCH="mysql --user=root --password=$MYSQL_PASS --batch"
@@ -46,17 +46,14 @@ MYSQL_ADMIN="mysqladmin --user=root --password=$MYSQL_PASS"
 $MYSQL_ADMIN create $DB_NAME
 $MYSQL_BATCH --execute "grant all privileges on $DB_NAME.* to $DB_USER@localhost identified by '$DB_PASS'; flush privileges;"
 
-# curl based install
-URL="http://127.0.0.1/index.php?module=install"
-CURL="curl -c /tmp/cookie -b /tmp/cookie"
-
-$CURL "${URL}&view=structure"
-$CURL "${URL}&view=essential"
-
-rm -f /tmp/cookie
-
-# enable authentication and set default creds
+#enable authentication and set default creds
 sed -i "s|^authentication.enabled.*|authentication.enabled = true|" $CONF
+
+#we don`t need mysql 1071 error
+sed -i "s|\`email\` varchar(255) DEFAULT NULL,|\`email\` varchar(40) DEFAULT NULL,|" $WEBROOT/databases/mysql/Full_Simple_Invoices.sql
+sed -i "s|\`name\` varchar(255) NOT NULL,|\`name\` varchar(50) NOT NULL,|" $WEBROOT/databases/mysql/Full_Simple_Invoices.sql
+
+mysql --user=root --password=$MYSQL_PASS $DB_NAME < $WEBROOT/databases/mysql/Full_Simple_Invoices.sql
 
 MD5_PASS=$(echo -n $ADMIN_PASS | md5sum | cut -d " " -f 1)
 $MYSQL_BATCH --database=$DB_NAME --execute "UPDATE si_user SET email=\"$ADMIN_MAIL\", password=\"$MD5_PASS\" WHERE id=1;" 
@@ -65,6 +62,6 @@ $MYSQL_BATCH --database=$DB_NAME --execute "UPDATE si_user SET email=\"$ADMIN_MA
 chmod 640 $CONF
 
 # stop services
-/etc/init.d/mysql stop
-/etc/init.d/apache2 stop
+service mysql stop
+service apache2 stop
 
