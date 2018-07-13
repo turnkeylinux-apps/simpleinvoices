@@ -11,7 +11,10 @@ and on top of that:
 
 - SimpleInvoices configurations:
    
-   - Installed from upstream source code to /var/www/simpleinvoices
+   - Installed from upstream source code (via git) to /var/www/simpleinvoices
+
+     **Security note**: Updates to SimpleInvoices may require supervision so
+     they **ARE NOT** configured to install automatically.
 
 - SSL support out of the box.
 - `Adminer`_ administration frontend for MySQL (listening on port
