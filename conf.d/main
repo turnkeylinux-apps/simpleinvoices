@@ -11,6 +11,9 @@ WEBROOT=/var/www/simpleinvoices
 
 CONF=$WEBROOT/config/config.php
 
+# output SI git log entry of latest commit to build log
+git --git-dir $WEBROOT/.git log -1
+
 # set permissions
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/tmp
@@ -21,14 +24,16 @@ PHPINI=/etc/php/7.0/apache2/php.ini
 sed -i "s|^memory_limit.*|memory_limit = 64M|" $PHPINI
 
 # tweak configuration
-sed -i "0,/params.username/s/params.username.*/params.username = $DB_USER/" $CONF
-sed -i "0,/params.password/s/params.password.*/params.password = $DB_PASS/" $CONF
-sed -i "0,/params.dbname/s/params.dbname.*/params.dbname = $DB_NAME/" $CONF
+sed -i "0,\|^database.params.username|s|=.*|= $DB_USER|" $CONF
+sed -i "0,\|^database.params.password|s|=.*|= $DB_PASS|" $CONF
+sed -i "0,\|^database.params.dbname|s|=.*|= $DB_NAME|" $CONF
 
-sed -i "s|^encryption.default.key.*|encryption.default.key = $(mcookie)|" $CONF
-sed -i "s|^nonce.key.*|nonce.key = $(mcookie)|" $CONF
+sed -i "\|^local.locale|s|=.*|= en_US|" $CONF
 
-sed -i "s|Europe/London|UTC|" $CONF
+sed -i "\|^encryption.default.key|s|=.*|= $(mcookie)|" $CONF
+sed -i "\|^nonce.key|s|=.*|= $(mcookie)|" $CONF
+
+sed -i "\|phpSettings.date.timezone|s|=.*|= UTC|" $CONF
 
 # configure apache
 a2dissite 000-default
@@ -64,4 +69,3 @@ chmod 640 $CONF
 # stop services
 service mysql stop
 service apache2 stop
-
