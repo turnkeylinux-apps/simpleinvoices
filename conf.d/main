@@ -24,9 +24,9 @@ PHPINI=/etc/php/7.0/apache2/php.ini
 sed -i "s|^memory_limit.*|memory_limit = 64M|" $PHPINI
 
 # tweak configuration
-sed -i "0,\|^database.params.username|s|=.*|= $DB_USER|" $CONF
-sed -i "0,\|^database.params.password|s|=.*|= $DB_PASS|" $CONF
-sed -i "0,\|^database.params.dbname|s|=.*|= $DB_NAME|" $CONF
+sed -i "0,\|^database.params.username|{\||s|=.*|= $DB_USER|}" $CONF
+sed -i "0,\|^database.params.password|{\||s|=.*|= $DB_PASS|}" $CONF
+sed -i "0,\|^database.params.dbname|{\||s|=.*|= $DB_NAME|}" $CONF
 
 sed -i "\|^local.locale|s|=.*|= en_US|" $CONF
 
