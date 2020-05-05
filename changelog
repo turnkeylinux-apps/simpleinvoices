@@ -1,3 +1,12 @@
+turnkey-simpleinvoices-16.0 (1) turnkey; urgency=low
+
+  * Upgraded to latest version of SimpleInvoices ('master' branch of git repo).
+
+  * Note: Please refer to turnkey-core's changelog for changes common to all
+    appliances. Here we only describe changes specific to this appliance.
+
+ -- Stefan Davis <stefan@turnkeylinux.org>  Tue, 05 May 2020 02:59:44 +1000
+
 turnkey-simpleinvoices-15.1 (1) turnkey; urgency=low
 
   * Rebuild to resolve inadvertent removal of mariadb during sec-updates

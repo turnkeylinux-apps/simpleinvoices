@@ -6,7 +6,6 @@ php-cli
 php-curl
 php-xsl
 php-mbstring
-php-mcrypt
 
 unzip
 
